@@ -1,0 +1,55 @@
+name: Build and Release Dock (Windows)
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    name: Build & Release for Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 1. 安装 pnpm (必须步骤，因为你的 scripts 依赖 pnpm)
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9  # 根据你的本地环境调整，建议使用 9
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm' # 开启 pnpm 缓存加速构建
+
+      # 2. 安装依赖 (改用 pnpm)
+      - name: Install dependencies
+        run: pnpm install
+
+      # 3. 构建应用 (修改为正确的 script 命令)
+      - name: Build the app
+        # 你的 package.json 中 electron:build 会调用 pnpm run build && electron-builder
+        run: pnpm run electron:build
+
+      # 4. 检查产物 (目录修改为 dock)
+      - name: List build artifacts
+        run: dir ./dock
+
+      # 5. 上传 Release (修改路径)
+      - name: Create Release & Upload .exe
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          files: |
+            ./dock/*.exe  
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
