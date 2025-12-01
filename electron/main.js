@@ -1,25 +1,17 @@
 // electron/main.js
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { join, dirname } from 'path' // 导入 dirname
 import { fileURLToPath } from 'url'  // 导入 fileURLToPath
 import { handlePing } from './ping.js'
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+const pkg = require('../package.json')
 const UPDATE_JSON_URL = 'https://cdn.jsdelivr.net/gh/Lazygui/Dock@gh-pages/version.json';
 const RELEASE_PAGE = 'https://github.com/Lazygui/Dock/releases/latest';
 // 1. 手动构建 __dirname
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-function isNewerVersion(remoteVer, currentVer) {
-       // 移除可能存在的 v 前缀
-       const v1 = String(remoteVer).replace(/^v/, '').split('.').map(Number);
-       const v2 = String(currentVer).replace(/^v/, '').split('.').map(Number);
-       for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
-              const val1 = v1[i] || 0;
-              const val2 = v2[i] || 0;
-              if (val1 > val2) return true;
-              if (val1 < val2) return false;
-       }
-       return false;
-}
+
 function createWindow() {
        const win = new BrowserWindow({
               width: 1029,
@@ -118,6 +110,9 @@ app.on('activate', () => {
        if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })
 
+/**
+ * 检查更新
+ */
 async function checkForUpdate() {
        try {
               // 加上时间戳 t 避免 CDN 缓存旧版本
@@ -132,10 +127,8 @@ async function checkForUpdate() {
               }
 
               const data = await response.json();
-              const latestVersion = data.version; // 这是 Action 生成的 Tag 版本
-              const currentVersion = app.getVersion();
-
-              console.log(`Update Check: Local(${currentVersion}) vs Remote(${latestVersion})`);
+              const latestVersion = data.version;
+              const currentVersion = pkg.version;
 
               if (isNewerVersion(latestVersion, currentVersion)) {
                      return {
@@ -150,4 +143,16 @@ async function checkForUpdate() {
               console.error('Update check failed:', error);
               return { hasUpdate: false, error: error.message };
        }
+}
+function isNewerVersion(remoteVer, currentVer) {
+       // 移除可能存在的 v 前缀
+       const v1 = String(remoteVer).replace(/^v/, '').split('.').map(Number);
+       const v2 = String(currentVer).replace(/^v/, '').split('.').map(Number);
+       for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
+              const val1 = v1[i] || 0;
+              const val2 = v2[i] || 0;
+              if (val1 > val2) return true;
+              if (val1 < val2) return false;
+       }
+       return false;
 }
