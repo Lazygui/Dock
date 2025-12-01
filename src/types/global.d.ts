@@ -7,6 +7,8 @@ declare global {
                      onPingReply: (callback: (data: { type: 'log' | 'status', payload: any }) => void) => () => void;
                      minimize: () => void;
                      close: () => void;
+                     checkForUpdate: () => Promise<UpdateInfo>;
+                     openExternal: (url: string) => Promise<void>;
               };
        }
 }

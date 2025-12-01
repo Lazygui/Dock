@@ -12,5 +12,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
               return () => ipcRenderer.removeListener('ping-reply', listener);
        },
        minimize: () => ipcRenderer.send('window-min'),
-       close: () => ipcRenderer.send('window-close')
+       close: () => ipcRenderer.send('window-close'),
+       checkForUpdate: () => ipcRenderer.invoke('check-for-update'),
+       openExternal: (url) => ipcRenderer.invoke('open-external', url)
 });

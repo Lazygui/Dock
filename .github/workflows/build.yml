@@ -3,7 +3,11 @@ name: Build and Release Dock (Windows)
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*' # 只有打 Tag 时触发 (例如 v1.0.1)
+
+# 必须添加权限设置，否则无法推送到 gh-pages 分支
+permissions:
+  contents: write
 
 jobs:
   build-and-release:
@@ -30,20 +34,54 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # 关键点 1：运行正确的打包命令
       - name: Build the app
         run: pnpm run electron:build
 
-      # 调试步骤：列出 dock 目录看看有没有 exe
+      # 调试步骤
       - name: List artifacts
         run: dir ./dock
 
+      # ----------------------------------------------------------------
+      # 【新增步骤 1】提取 Tag 版本并生成 version.json
+      # 注意：这里使用 shell: bash，以便在 Windows 上使用 Linux 命令
+      # ----------------------------------------------------------------
+      - name: Generate Version JSON
+        shell: bash
+        run: |
+          # 1. 获取 Tag 名 (例如 v1.0.1)
+          TAG_NAME=${{ github.ref_name }}
+          
+          # 2. 去掉 'v' 前缀 (变为 1.0.1)
+          VERSION=${TAG_NAME#v}
+          
+          echo "Detected version: $VERSION"
+          
+          # 3. 创建一个临时目录存放 json
+          mkdir public_deploy
+          
+          # 4. 生成 json 文件写入该目录
+          # 这里只存版本号，因为下载链接我们是写死跳转到 Releases 页面的
+          echo "{\"version\": \"$VERSION\", \"updated_at\": \"$(date -Iseconds)\"}" > public_deploy/version.json
+
+      # ----------------------------------------------------------------
+      # 【新增步骤 2】将 version.json 推送到 gh-pages 分支
+      # 这样 jsDelivr CDN 就能通过 gh-pages 分支读取到最新版本
+      # ----------------------------------------------------------------
+      - name: Deploy Version File to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public_deploy # 只发布这个文件夹里的内容
+          publish_branch: gh-pages     # 发布到 gh-pages 分支
+          force_orphan: true           # 每次发布都覆盖旧历史，保持分支干净
+          commit_message: "chore: update version.json to ${{ github.ref_name }}"
+
+      # 原有的 Release 步骤
       - name: Create Release & Upload .exe
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
-          # 关键点 2：路径必须对应 package.json 中的 directories.output
           files: |
             ./dock/*.exe
           draft: false

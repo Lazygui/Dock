@@ -21,5 +21,16 @@ export const toolRoutes: RouteRecordRaw[] = [
                      description: '批量将html转为图片',
                      category: 'convert'
               }
+       },
+       {
+              path: 'base64',
+              name: 'Base64',
+              component: () => import('../views/Base64Tool.vue'),
+              meta: {
+                     title: 'Base64 Code',
+                     icon: 'ri-lock-unlock-line',
+                     description: 'Base64 加密/解密',
+                     category: 'crypto'
+              }
        }
 ]
