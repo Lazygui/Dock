@@ -1,0 +1,138 @@
+body {
+       width: 100%;
+       min-height: 100vh;
+       padding: 0;
+       margin: 0;
+       overflow-x: hidden;
+       background-color: #f5f7ff;
+       color: #212529;
+       font-family:
+              "Inter",
+              -apple-system,
+              BlinkMacSystemFont,
+              sans-serif;
+}
+
+body {
+       background-color: var(--bg-body);
+       color: var(--text-main);
+}
+#app {
+       width: 100%;
+       height: 100%;
+       padding: 0;
+       margin: 0;
+       overflow-x: hidden;
+}
+* {
+       box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+       width: 8px;
+       height: 8px;
+
+       &-track {
+              background-color: transparent;
+       }
+
+       &-thumb {
+              background-color: var(--border, #ccc);
+              border-radius: 4px;
+              transition: background-color 0.3s;
+
+              &:hover {
+                     background-color: var(--text-sub, #999);
+              }
+       }
+}
+/* ================= CSS 变量定义 ================= */
+:root {
+       /* --- 基础配置 (明亮模式 - 默认) --- */
+       --primary: #4361ee;
+       --primary-hover: #3a53d0;
+       --primary-subtle: rgba(67, 97, 238, 0.1);
+
+       --bg-body: #f8f9fa;
+       --bg-card: #ffffff;
+       --bg-input: #ffffff;
+       --bg-hover: #f1f3f5;
+
+       --text-main: #212529;
+       --text-sub: #6c757d;
+       --text-placeholder: #adb5bd;
+
+       --border: rgba(0, 0, 0, 0.08);
+       --border-hover: rgba(67, 97, 238, 0.3);
+
+       --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.05);
+       --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.04);
+       --shadow-hover: 0 10px 25px rgba(67, 97, 238, 0.15);
+
+       --radius-box: 16px;
+       --success: #28a745;
+       --danger: #dc3545;
+       --warning: #ffc107;
+       --success-bg: rgba(40, 167, 69, 0.1);
+       --danger-bg: rgba(220, 53, 69, 0.1);
+       --warning-bg: rgba(255, 193, 7, 0.1);
+}
+
+/* --- 暗黑模式 (Dark Mode) --- */
+:root[data-theme="dark"] {
+       --primary: #5c7cfa;
+       --primary-hover: #748ffc;
+       --primary-subtle: rgba(92, 124, 250, 0.15);
+
+       --bg-body: #0f172a;
+       --bg-card: #1e293b;
+       --bg-input: #1e293b;
+       --bg-hover: #334155;
+
+       --text-main: #f8fafc;
+       --text-sub: #94a3b8;
+       --text-placeholder: #475569;
+
+       --border: rgba(255, 255, 255, 0.08);
+       --border-hover: rgba(92, 124, 250, 0.4);
+
+       --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.3);
+       --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.2);
+       --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.5);
+       --success: #4ade80;
+       --danger: #f87171;
+       --warning: #facc15;
+       --success-bg: rgba(74, 222, 128, 0.1);
+       --danger-bg: rgba(248, 113, 113, 0.1);
+       --warning-bg: rgba(250, 204, 21, 0.1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+       animation: none;
+       mix-blend-mode: normal;
+       display: block;
+}
+
+/* 1. 禁止所有默认动画 */
+::view-transition-group(root), /* 新增：限制 group 容器 */
+::view-transition-old(root),
+::view-transition-new(root) {
+       animation: none !important; /* 强制覆盖 */
+       mix-blend-mode: normal;
+}
+
+/* 2. 确保层级逻辑 (保持上一条回答的逻辑，这部分没问题) */
+:root[data-theme="dark"]::view-transition-new(root) {
+       z-index: 9999;
+}
+:root[data-theme="dark"]::view-transition-old(root) {
+       z-index: 1;
+}
+
+:root:not([data-theme="dark"])::view-transition-old(root) {
+       z-index: 9999;
+}
+:root:not([data-theme="dark"])::view-transition-new(root) {
+       z-index: 1;
+}

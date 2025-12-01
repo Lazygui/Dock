@@ -1,0 +1,50 @@
+.error_Icon {
+       background: #ff4b4b;
+       animation: error 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+       &::before {
+              animation: errorBefore 0.15s ease-out forwards;
+              animation-delay: 180ms;
+              content: "";
+              position: absolute;
+              border-radius: 3px;
+              background: #fff;
+              bottom: 9px;
+              left: 4px;
+              height: 2px;
+              width: 12px;
+       }
+       &::after {
+              content: "";
+              animation: errorAfter 0.15s ease-out forwards;
+              animation-delay: 150ms;
+              position: absolute;
+              border-radius: 3px;
+              opacity: 0;
+              background: #fff;
+              bottom: 9px;
+              left: 4px;
+              height: 2px;
+              width: 12px;
+       }
+}
+.success_Icon {
+       background: #61d345;
+       animation: success 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+       &::after {
+              content: "";
+              box-sizing: border-box;
+              animation: successAfter 0.2s ease-out forwards;
+              opacity: 0;
+              animation-delay: 200ms;
+              position: absolute;
+              border-right: 2px solid;
+              border-bottom: 2px solid;
+              border-color: #fff;
+              bottom: 6px;
+              left: 6px;
+              height: 10px;
+              width: 6px;
+       }
+}
