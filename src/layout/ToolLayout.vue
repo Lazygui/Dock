@@ -114,16 +114,14 @@ const goHome = () => {
 </script>
 
 <style scoped lang="scss">
-/* ... (保留原有的 .tool-wrapper, .layout-flex, .sidebar, .main-content 样式) */
 .tool-wrapper {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: var(--bg-body, #f8f9fa);
   overflow: hidden;
 
   .tool-container {
-    max-width: 1400px;
-    margin: 0 auto;
+    margin: 0;
     padding: 20px;
     height: 100%;
     box-sizing: border-box;
