@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/hooks';
 
 const { isDark, toggleTheme } = useTheme();
 </script>

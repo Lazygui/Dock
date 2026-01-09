@@ -32,5 +32,16 @@ export const toolRoutes: RouteRecordRaw[] = [
                      description: 'Base64 加密/解密',
                      category: 'crypto'
               }
+       },
+       {
+              path: 'mermaid',
+              name: 'mermaid',
+              component: () => import('../views/MermaidTool.vue'),
+              meta: {
+                     title: 'Mermaid View',
+                     icon: 'ri-lock-unlock-line',
+                     description: 'Mermaid 语法转换UI图表',
+                     category: 'crypto'
+              }
        }
 ]

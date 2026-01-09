@@ -1,5 +1,5 @@
 import toast from '@/general/toast';
-import { mitter } from "@/hooks/mitter";
+import { mitter } from "@/hooks";
 const ERROR_TOAST = () => {
        toast.error('请检查路由配置是否正确')
 }

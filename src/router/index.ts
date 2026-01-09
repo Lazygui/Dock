@@ -1,13 +1,13 @@
 import { createWebHashHistory, createRouter, type RouteRecordRaw, NavigationFailureType, isNavigationFailure } from 'vue-router'
-import { mitter } from '@/hooks/mitter'
+import { mitter } from '@/hooks'
 import { toolRoutes } from "./tools"
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../layout/HomeView.vue'
 
 export const routes: RouteRecordRaw[] = [
        { path: '/', component: HomeView },
        {
               path: '/tools',
-              component: () => import('../views/ToolLayout.vue'),
+              component: () => import('../layout/ToolLayout.vue'),
               children: toolRoutes
        },
 ]

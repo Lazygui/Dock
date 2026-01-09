@@ -107,7 +107,7 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .ping-container {
-       width: 100%;
+       max-width: 800px;
        height: 100%;
        margin: 0 auto;
        display: flex;
@@ -116,7 +116,6 @@ onUnmounted(() => {
        padding-bottom: 24px;
 
        .card {
-              width: 100%;
               background-color: var(--bg-card);
               border-radius: var(--radius-box);
               box-shadow: var(--shadow-card);

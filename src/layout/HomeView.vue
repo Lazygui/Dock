@@ -43,7 +43,7 @@ import { ref, computed } from 'vue';
 import ToolCard, { type Tool } from '@/components/Home/ToolCard.vue';
 import { toolRoutes } from '@/router/tools';
 import { categories } from '@/router/router.types';
-import { mitter } from '@/hooks/mitter';
+import { mitter } from '@/hooks';
 
 const currentCategory = ref<string>('all');
 const searchQuery = ref<string>('');

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref } from 'vue';
-import { mitter } from '@/hooks/mitter';
+import { mitter } from '@/hooks';
 import { RouterView, useRoute } from 'vue-router';
-import WindowHeader from '@/views/WindowHeader.vue';
+import WindowHeader from '@/layout/WindowHeader.vue';
 import "./index"
 
 const route = useRoute();
@@ -13,8 +13,8 @@ const updateInfo = ref<{ version: string; note: string; downloadUrl: string } | 
 
 const checkUpdate = async () => {
   try {
-    const res = await window.electronAPI.checkForUpdate();
-    if (res.hasUpdate && res.version && res.downloadUrl) {
+    const res = await window.electronAPI?.checkForUpdate();
+    if (res && res.hasUpdate && res.version && res.downloadUrl) {
       updateInfo.value = {
         version: res.version,
         note: res.note || '暂无更新日志',
