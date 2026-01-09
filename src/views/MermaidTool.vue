@@ -302,7 +302,8 @@ onUnmounted(() => {
 .editor-pane {
        border-right: 1px solid var(--border);
        background-color: var(--bg-card);
-       /* 固定宽度或比例，这里设为 flex: 1 平分，也可以设为 flex: 0 0 400px */
+       z-index: 2;
+       box-shadow: 4px 0 12px rgba(0, 0, 0, 0.03);
 }
 
 .preview-pane {
@@ -367,8 +368,8 @@ onUnmounted(() => {
 }
 
 .code-textarea:focus {
-       background-color: var(--bg-hover);
-       /* 微妙的聚焦效果 */
+       background-color: transparent;
+       outline: none;
 }
 
 /* 预览可视区域 */
