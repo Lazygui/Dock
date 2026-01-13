@@ -6,7 +6,7 @@ import WindowHeader from '@/layout/WindowHeader.vue';
 import "./index"
 
 const route = useRoute();
-
+const isReady = ref(false);
 // --- 新增：更新检测逻辑 ---
 const showUpdateModal = ref(false);
 const updateInfo = ref<{ version: string; note: string; downloadUrl: string } | null>(null);
@@ -41,8 +41,12 @@ const layoutKey = computed(() => {
 });
 
 onMounted(() => {
-  // 启动时自动检查更新
-  checkUpdate();
+  requestAnimationFrame(() => {
+    isReady.value = true;
+  });
+  setTimeout(() => {
+    checkUpdate();
+  }, 1000);
 });
 
 onUnmounted(() => {
@@ -51,7 +55,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="app-layout">
+  <div class="app-layout" :class="{ 'app-visible': isReady }">
     <WindowHeader />
 
     <main class="main-container">
@@ -85,6 +89,8 @@ onUnmounted(() => {
 <style scoped lang="scss">
 /* 你的原有样式 */
 .app-layout {
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -113,6 +119,10 @@ onUnmounted(() => {
     opacity: 0;
     transform: translateY(-10px);
   }
+}
+
+.app-layout.app-visible {
+  opacity: 1;
 }
 
 /* --- 新增：弹窗样式 --- */
