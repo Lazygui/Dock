@@ -28,23 +28,29 @@ body {
        box-sizing: border-box;
 }
 
+/* 滚动条整体 */
 *::-webkit-scrollbar {
        width: 8px;
        height: 8px;
+}
 
-       &-track {
-              background-color: transparent;
-       }
+/* 滚动条轨道 */
+*::-webkit-scrollbar-track {
+       background-color: transparent;
+}
 
-       &-thumb {
-              background-color: var(--border, #ccc);
-              border-radius: 4px;
-              transition: background-color 0.3s;
+/* 滚动条滑块 - 默认状态 */
+*::-webkit-scrollbar-thumb {
+       /* 使用 --text-placeholder 变量，对比度适中 */
+       background-color: var(--text-placeholder, #adb5bd);
+       border-radius: 4px;
+       transition: background-color 0.3s;
+}
 
-              &:hover {
-                     background-color: var(--text-sub, #999);
-              }
-       }
+/* 滚动条滑块 - 鼠标悬停状态 */
+*::-webkit-scrollbar-thumb:hover {
+       /* 使用 --text-sub 变量，悬停时加深颜色 */
+       background-color: var(--text-sub, #6c757d);
 }
 /* ================= CSS 变量定义 ================= */
 :root {
