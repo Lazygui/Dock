@@ -40,8 +40,7 @@ const handleClose = () => {
   window.electronAPI?.close()
 }
 // 简单的点击处理（预留）
-const handleMenuClick = (action: string) => {
-  console.log('Menu action:', action)
+const handleMenuClick = (_action: string) => {
   activeMenuIndex.value = null // 点击后关闭菜单
 }
 </script>
