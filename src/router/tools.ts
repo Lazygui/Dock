@@ -23,6 +23,17 @@ export const toolRoutes: RouteRecordRaw[] = [
               }
        },
        {
+              path: 'markdown-to-hTML',
+              name: 'MARKDOWNTOHTML',
+              component: () => import('../views/MarkdowntoHTMLTool.vue'),
+              meta: {
+                     title: 'Markdown to HTML',
+                     icon: 'ri-image-2-line',
+                     description: 'markdown代码转HTML',
+                     category: 'convert'
+              }
+       },
+       {
               path: 'base64',
               name: 'Base64',
               component: () => import('../views/Base64Tool.vue'),
