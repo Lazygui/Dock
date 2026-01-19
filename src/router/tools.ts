@@ -50,7 +50,7 @@ export const toolRoutes: RouteRecordRaw[] = [
               component: () => import('../views/MermaidTool.vue'),
               meta: {
                      title: 'Mermaid View',
-                     icon: 'ri-lock-unlock-line',
+                     icon: 'ri-markdown-line',
                      description: 'Mermaid 语法转换UI图表',
                      category: 'crypto'
               }

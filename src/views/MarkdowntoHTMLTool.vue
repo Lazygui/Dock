@@ -41,7 +41,7 @@ const vsCodeBaseTheme = EditorView.theme({
        }
 }, { dark: true });
 
-// 定义语法高亮规则 
+// 定义语法高亮规则
 const vsCodeHighlightStyle = HighlightStyle.define([
        // --- Markdown 特有 ---
        { tag: tags.heading, color: "#569cd6", fontWeight: "bold" },
@@ -171,13 +171,7 @@ onMounted(() => {
                      }),
                      vsCodeTheme,
                      updateListener,
-                     keymap.of([{
-                            key: 'Ctrl-Enter',
-                            run: () => {
-                                   handleConvert();
-                                   return true;
-                            },
-                     }]),
+                     // 移除了手动转换的 Ctrl-Enter 快捷键
               ],
        });
 
@@ -186,6 +180,7 @@ onMounted(() => {
               parent: editorRef.value,
        });
 
+       // 初始化时转换一次默认内容
        handleConvert();
 });
 
@@ -195,12 +190,18 @@ onUnmounted(() => {
        }
 });
 
+// MODIFIED: 监听 markdownInput 的变化，以实现实时预览
 watch(markdownInput, (newValue) => {
+       // 当 markdownInput 以编程方式（而不是通过编辑器输入）更改时，同步更新编辑器视图
        if (view && newValue !== view.state.doc.toString()) {
               view.dispatch({
                      changes: { from: 0, to: view.state.doc.length, insert: newValue },
               });
        }
+       // 无论内容如何变化，都执行转换
+       handleConvert();
+}, {
+       //
 });
 
 // --- 核心转换与工具函数 ---
@@ -242,7 +243,7 @@ const copyResult = async () => {
 // 修改：下载时使用完整的 HTML 结构
 const handleDownload = () => {
        if (!fullHtmlOutput.value) {
-              alert('请先转换内容再下载！');
+              alert('请先输入内容再下载！');
               return;
        }
        const blob = new Blob([fullHtmlOutput.value], { type: 'text/html;charset=utf-8' });
@@ -317,21 +318,16 @@ const handleDownload = () => {
                             <template v-if="rightPanelMode === 'preview'">
                                    <!-- 预览模式：依然使用 htmlOutput (片段)，因为它是渲染在 div 里的 -->
                                    <div class="preview-content markdown-body"
-                                          v-html="htmlOutput || '<p>点击下方按钮开始转换...</p>'"></div>
+                                          v-html="htmlOutput || '<p>开始输入内容以实时预览...</p>'"></div>
                             </template>
                             <template v-else>
                                    <!-- 代码模式：使用 fullHtmlOutput (完整文档) -->
-                                   <pre class="styled-output"><code>{{ fullHtmlOutput || '点击下方按钮开始转换...' }}</code></pre>
+                                   <pre class="styled-output"><code>{{ fullHtmlOutput || '当前无内容...' }}</code></pre>
                             </template>
                      </div>
               </div>
 
-              <!-- 底部操作栏 -->
-              <div class="footer-bar">
-                     <button class="primary-btn" @click="handleConvert">
-                            立即转换
-                     </button>
-              </div>
+              <!-- 底部操作栏 (已被移除) -->
        </div>
 </template>
 
