@@ -70,7 +70,7 @@
 import { computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { toolRoutes } from '@/router/tools';
-import type { Meta } from '@/router/router.types';
+import type { Meta } from '@/router/tools';
 
 const router = useRouter();
 const route = useRoute();

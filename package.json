@@ -9,7 +9,9 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "electron:dev": "concurrently \"pnpm run dev\" \"wait-on http://localhost:8080 && cross-env NODE_ENV=development  electron ./electron/main.js\"",
-    "electron:build": "pnpm run build && electron-builder"
+    "electron:build": "pnpm run build && electron-builder",
+    "electron:build:portable": "pnpm run build && electron-builder --win portable",
+    "electron:build:installer": "pnpm run build && electron-builder --win nsis"
   },
   "build": {
     "appId": "com.example.dock",
@@ -26,7 +28,13 @@
     "win": {
       "target": "portable",
       "icon": "Dock.ico",
-      "artifactName": "${productName}.exe"
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
     }
   },
   "dependencies": {
