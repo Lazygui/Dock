@@ -1,8 +1,7 @@
 // electron/main.js
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import { join, dirname } from 'path' // 导入 dirname
 import { fileURLToPath } from 'url'  // 导入 fileURLToPath
-import { handlePing } from './ping.js'
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 const pkg = require('../package.json')
@@ -39,16 +38,20 @@ function createWindow() {
        win.once('ready-to-show', () => {
               win.show()
        })
-       ipcMain.on('window-min', () => {
-              win.minimize();
-       })
-
-       ipcMain.on('window-close', () => {
-              win.close();
-       })
 }
 
 app.whenReady().then(() => {
+       const { ipcMain, shell } = require('electron');
+       const { handlePing } = require('./ping.js');
+       ipcMain.on('window-min', () => {
+              if (win) win.minimize(); // <-- 加上 if(win) 做保护
+       })
+
+       ipcMain.on('window-close', () => {
+              if (win) win.close(); // <-- 加上 if(win) 做保护
+       })
+
+
        ipcMain.on('start-ping', handlePing);
        ipcMain.handle('check-for-update', checkForUpdate);
        ipcMain.handle('open-external', (event, url) => {

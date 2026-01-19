@@ -4,10 +4,6 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
 // 核心网络库
-const tcpp = require('tcp-ping'); // 用于带端口的 TCP 测试
-const { spawn } = require('child_process'); // 用于调用系统原生 Ping
-const os = require('os'); // 用于判断操作系统
-const iconv = require('iconv-lite'); // 用于修复 Windows 中文乱码
 
 /**
  * 辅助函数：统一发送消息回前端
@@ -26,6 +22,11 @@ function reply(event, type, payload) {
  * 主处理函数
  */
 export async function handlePing(event, { ip, port }) {
+       const tcpp = require('tcp-ping');
+       const { spawn } = require('child_process');
+       const os = require('os');
+       const iconv = require('iconv-lite');
+
        const targetPort = parseInt(port, 10);
        const hasPort = !isNaN(targetPort) && targetPort > 0;
        const targetDesc = hasPort ? `${ip}:${targetPort}` : ip;
